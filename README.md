@@ -6,6 +6,13 @@ Este proyecto es una aplicación móvil desarrollada con [Expo](https://expo.dev
 
 La aplicación se conecta a la instancia de Odoo a través de una WebView, proporcionando acceso a las funcionalidades de Odoo dentro de una aplicación nativa. Esto permite a los usuarios interactuar con Odoo como lo harían en un navegador, pero dentro de un entorno móvil más integrado.
 
+
+## Captura de Pantalla
+
+Aquí tienes un ejemplo de cómo se ve la aplicación en acción:
+
+![Captura de Pantalla](./assets/ss1.png)
+
 ## Requisitos previos
 
 - Node.js y npm instalados en tu sistema.
