@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Odoo",
-    "slug": "Odoo",
+    "slug": "odoo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -13,13 +13,18 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourcompany.odoo",  // Reemplaza con tu identificador de paquete
+      "buildNumber": "1.0.0"
     },
     "android": {
+      "package": "com.yourcompany.odoo",  // Reemplaza con tu identificador de paquete
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": []
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +36,15 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
     }
   }
 }
