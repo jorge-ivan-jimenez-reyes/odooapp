@@ -6,7 +6,7 @@ const App = () => {
   return (
     <SafeAreaView style={styles.container}>
       <WebView 
-        source={{ uri: 'https://your-odoo-instance.com' }}  // Reemplaza con la URL de tu instancia de Odoo
+        source={{ uri: 'https://portal.wtech-cs.com/en/web/login?login=jjimenez%40wtech-cs.com&redirect=%2Fweb' }}
         style={{ flex: 1 }}
       />
     </SafeAreaView>
@@ -16,7 +16,7 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',  // Ajusta el color de fondo si es necesario
+    backgroundColor: '#fff',
   },
 });
 
