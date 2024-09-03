@@ -1,50 +1,36 @@
-# Welcome to your Expo app 👋
+# Odoo Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Este proyecto es una aplicación móvil desarrollada con [Expo](https://expo.dev) y [React Native](https://reactnative.dev), diseñada para cargar la interfaz de Odoo directamente dentro de una aplicación móvil usando una WebView.
 
-## Get started
+## Descripción
 
-1. Install dependencies
+La aplicación se conecta a la instancia de Odoo a través de una WebView, proporcionando acceso a las funcionalidades de Odoo dentro de una aplicación nativa. Esto permite a los usuarios interactuar con Odoo como lo harían en un navegador, pero dentro de un entorno móvil más integrado.
+
+## Requisitos previos
+
+- Node.js y npm instalados en tu sistema.
+- Expo CLI instalado globalmente (`npm install -g expo-cli`).
+- Un dispositivo físico o emulador configurado para probar la aplicación.
+
+## Configuración del Proyecto
+
+1. Clona este repositorio:
 
    ```bash
-   npm install
+   git clone https://github.com/tuusuario/odoo-mobile-app.git
    ```
 
-2. Start the app
+## Estructura de el Proyecto
 
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+my-odoo-webview-app/
+│
+├── app/ # Carpeta principal para el código fuente
+│ ├── index.tsx # Archivo principal que inicia la aplicación
+│
+├── node_modules/ # Dependencias instaladas por npm
+├── .gitignore # Archivos y carpetas que git debe ignorar
+├── app.json # Configuración de la aplicación Expo
+├── babel.config.js # Configuración de Babel para la transpilación del código
+├── package-lock.json # Detalles de las dependencias instaladas
+├── package.json # Dependencias y scripts del proyecto
+└── README.md # Documentación del proyecto
