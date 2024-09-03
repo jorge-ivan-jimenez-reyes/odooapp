@@ -11,7 +11,7 @@ La aplicación se conecta a la instancia de Odoo a través de una WebView, propo
 
 Aquí tienes un ejemplo de cómo se ve la aplicación en acción:
 
-![Captura de Pantalla](./assets/ss1.png)
+![Captura de Pantalla](../assets/ss1.png)
 
 ## Requisitos previos
 
