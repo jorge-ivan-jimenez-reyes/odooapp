@@ -9,16 +9,16 @@ const App: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header with Odoo logo and message */}
+      
       <View style={styles.header}>
         <Image 
           source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Odoo_logo.png' }} 
           style={styles.logo}
         />
-        <Text style={styles.headerText}>You are browsing Odoo</Text>
+        <Text style={styles.headerText}>WTECH Ciudad Segura</Text>
       </View>
 
-      {/* Loader when the page is loading */}
+     
       {loading && (
         <View style={styles.loader}>
           <ActivityIndicator size="large" color="#625488" />
@@ -54,9 +54,8 @@ const App: React.FC = () => {
         <TouchableOpacity style={styles.button} onPress={() => webViewRef.current?.goBack()}>
           <Text style={styles.buttonText}>Back</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => webViewRef.current?.goForward()}>
-          <Text style={styles.buttonText}>Forward</Text>
-        </TouchableOpacity>
+       
+        
         <TouchableOpacity style={styles.button} onPress={() => webViewRef.current?.reload()}>
           <Text style={styles.buttonText}>Reload</Text>
         </TouchableOpacity>
@@ -71,11 +70,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F2', // Light gray background
   },
   header: {
-    backgroundColor: '#625488', // Morado que prefieres
-    padding: 10,
+    backgroundColor: '#71629e', // Morado que prefieres
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    paddingTop: 'auto'
   },
   logo: {
     width: 50,
@@ -102,7 +100,7 @@ const styles = StyleSheet.create({
     color: '#FF0000',
   },
   retryButton: {
-    backgroundColor: '#625488', // Morado para el botón de retry
+    backgroundColor: '#71629e', // Morado para el botón de retry
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
