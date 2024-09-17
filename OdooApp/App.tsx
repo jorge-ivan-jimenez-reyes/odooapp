@@ -1,41 +1,35 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, ActivityIndicator, View, Text, Image, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, ActivityIndicator, View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 import { WebView } from 'react-native-webview';
-import * as Notifications from 'expo-notifications';
-import { Platform } from 'react-native';
-import Constants from 'expo-constants';
 
-// Cambia esta URL por la de tu servidor WebSocket
+// URL de tu WebSocket (de Odoo o cualquier otro servidor WebSocket)
 const WEBSOCKET_URL = 'ws://192.168.1.136:8080';
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
-});
-
-const App: React.FC = () => {
+const OdooWebView: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const webViewRef = useRef<WebView>(null);
-  const [wsMessage, setWsMessage] = useState<string>(''); // Estado para mensajes WebSocket
-  const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
+  const [wsMessage, setWsMessage] = useState<string>(''); // Estado para guardar mensajes de WebSocket
 
+  // Configuración del WebSocket
   useEffect(() => {
-    // Configuración de WebSocket
     const ws = new WebSocket(WEBSOCKET_URL);
 
     ws.onopen = () => {
       console.log('WebSocket connection opened');
-      ws.send('Hola desde el cliente React Native'); // Envía un mensaje al servidor
+      ws.send('Cliente conectado a WebSocket desde React Native'); // Envía un mensaje al servidor
     };
 
     ws.onmessage = (event) => {
       const message = event.data;
-      setWsMessage(message); // Actualizar estado con mensaje recibido
-      console.log('Message from WebSocket:', message);
+      setWsMessage(message); // Actualiza el estado con el mensaje recibido
+      console.log('Mensaje recibido del WebSocket:', message);
+      // Opción: inyectar el mensaje en la WebView o mostrar una alerta
+      if (webViewRef.current) {
+        webViewRef.current.injectJavaScript(`
+          alert("Mensaje recibido en WebSocket: ${message}");
+        `);
+      }
     };
 
     ws.onerror = (error) => {
@@ -51,77 +45,6 @@ const App: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    // Configurar notificaciones push con Expo
-    registerForPushNotificationsAsync().then(token => {
-      if (token) {
-        setExpoPushToken(token); // Solo establece el token si no es undefined
-      }
-    });
-
-    // Listener para cuando llegue una notificación mientras la app está abierta
-    const notificationListener = Notifications.addNotificationReceivedListener(notification => {
-      console.log('Notificación recibida:', notification);
-    });
-
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (expoPushToken) {
-      // Envía el token al backend o haz algo con él
-      console.log('Expo Push Token:', expoPushToken);
-
-      // Ejemplo de cómo enviar el token a tu backend
-      fetch('https://your-backend.com/api/saveToken', {
-        method: 'POST',
-        body: JSON.stringify({ token: expoPushToken }),
-        headers: { 'Content-Type': 'application/json' },
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Token enviado al backend:', data);
-      })
-      .catch(error => {
-        console.error('Error al enviar el token:', error);
-      });
-    }
-  }, [expoPushToken]);
-
-  // Función para registrar el dispositivo para notificaciones push
-  async function registerForPushNotificationsAsync() {
-    let token;
-    if (Constants.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return null;
-      }
-      token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log('Expo Push Token:', token); // Aquí es donde obtenemos el token
-    } else {
-      alert('Must use physical device for Push Notifications');
-    }
-
-    if (Platform.OS === 'android') {
-      Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
-      });
-    }
-
-    return token;
-  }
-
   return (
     <SafeAreaView style={styles.container}>
       {/* Header con logo y título */}
@@ -130,20 +53,20 @@ const App: React.FC = () => {
           source={{ uri: 'https://upload.wikimedia.org/wikipedia/commons/f/f1/Odoo_logo.png' }} 
           style={styles.logo}
         />
-        <Text style={styles.headerText}>WTECH Ciudad Segura</Text>
+        <Text style={styles.headerText}>CRM Odoo - Ciudad Segura</Text>
       </View>
 
-      {/* Loader durante la carga */}
+      {/* Loader mientras carga el WebView */}
       {loading && (
         <View style={styles.loader}>
           <ActivityIndicator size="large" color="#625488" />
         </View>
       )}
 
-      {/* Error Handling */}
+      {/* WebView para mostrar la interfaz del CRM de Odoo */}
       {error ? (
         <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>Error loading page. Please try again.</Text>
+          <Text style={styles.errorText}>Error cargando la página. Intenta nuevamente.</Text>
           <TouchableOpacity 
             style={styles.retryButton} 
             onPress={() => {
@@ -151,35 +74,51 @@ const App: React.FC = () => {
               setLoading(true);
               webViewRef.current?.reload();
             }}>
-            <Text style={styles.retryButtonText}>Retry</Text>
+            <Text style={styles.retryButtonText}>Reintentar</Text>
           </TouchableOpacity>
         </View>
       ) : (
         <WebView 
           ref={webViewRef}
-          source={{ uri: 'https://portal.wtech-cs.com/en/web/login?login=jjimenez%40wtech-cs.com&redirect=%2Fweb' }}
+          source={{ uri: 'https://portal.wtech-cs.com/en/web/login?login=jjimenez%40wtech-cs.com&redirect=%2Fweb' }} // URL del CRM de Odoo
           style={{ flex: 1 }}
           onLoad={() => setLoading(false)}
           onError={() => setError(true)}
+          javaScriptEnabled={true}
+          // Inyecta JavaScript para recibir mensajes desde WebSocket y alertarlos en la WebView
+          injectedJavaScript={`
+            (function() {
+              const socket = new WebSocket('${WEBSOCKET_URL}');
+              socket.onmessage = function(event) {
+                window.ReactNativeWebView.postMessage(event.data);
+              };
+            })();
+          `}
+          onMessage={(event) => {
+            const message = event.nativeEvent.data;
+            // Puedes procesar el mensaje en la app nativa, mostrarlo o hacer algo más
+            Alert.alert("Notificación recibida", message);
+            console.log('Mensaje desde WebView:', message);
+          }}
         />
       )}
 
-      {/* Mostrar mensajes de WebSocket */}
+      {/* Botones de navegación para el WebView */}
+      <View style={styles.navButtons}>
+        <TouchableOpacity style={styles.button} onPress={() => webViewRef.current?.goBack()}>
+          <Text style={styles.buttonText}>Atrás</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => webViewRef.current?.reload()}>
+          <Text style={styles.buttonText}>Recargar</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Mostrar mensajes de WebSocket recibidos */}
       {wsMessage ? (
         <View style={styles.wsMessageContainer}>
           <Text style={styles.wsMessageText}>Mensaje en tiempo real: {wsMessage}</Text>
         </View>
       ) : null}
-
-      {/* Botones de navegación */}
-      <View style={styles.navButtons}>
-        <TouchableOpacity style={styles.button} onPress={() => webViewRef.current?.goBack()}>
-          <Text style={styles.buttonText}>Back</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => webViewRef.current?.reload()}>
-          <Text style={styles.buttonText}>Reload</Text>
-        </TouchableOpacity>
-      </View>
     </SafeAreaView>
   );
 };
@@ -224,7 +163,7 @@ const styles = StyleSheet.create({
     color: '#FF0000',
   },
   retryButton: {
-    backgroundColor: '#71629e', // Morado para el botón de retry
+    backgroundColor: '#71629e', // Morado para el botón de reintentar
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 5,
@@ -266,4 +205,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default OdooWebView;
