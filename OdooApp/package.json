@@ -5,7 +5,7 @@
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
-    "ios": "expo run:ios",
+    "ios": "npx expo run:ios",
     "web": "expo start --web"
   },
   "dependencies": {
@@ -24,7 +24,6 @@
   "devDependencies": {
     "@babel/core": "^7.20.0",
     "@types/react": "~18.2.45",
-    "@types/react-native": "^0.72.8",
     "@types/ws": "^8.5.12",
     "tailwindcss": "3.3.2",
     "typescript": "^5.1.3"

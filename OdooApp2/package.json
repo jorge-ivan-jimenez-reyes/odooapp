@@ -1,0 +1,1 @@
+{"name":"OdooApp2","version":"0.0.1","private":true,"scripts":{"start":"node node_modules/react-native/local-cli/cli.js start"},"dependencies":{"@react-native-firebase/app":"^20.5.0","@react-native-firebase/messaging":"^20.5.0","notifee":"^0.0.1","react-native":"0.75.3","react-native-webview":"^13.12.2"}}
